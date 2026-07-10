@@ -1482,20 +1482,58 @@ margin-top:30px;
 
 }
 
-.course-card h3{
+.option-btn.selected{
 
-margin-bottom:15px;
+    background:#2563EB;
+
+    color:white;
+
+    border:2px solid #60A5FA;
+
+    box-shadow:0 0 20px rgba(37,99,235,.7);
+
+}
+.review-container{
+
+    max-width:1000px;
+
+    margin:auto;
+
+    padding:60px;
 
 }
 
-.course-card p{
+.review-card{
 
-color:#94A3B8;
+    background:#1E293B;
 
-margin-bottom:20px;
+    margin:25px 0;
+
+    padding:25px;
+
+    border-radius:15px;
+
+    border:1px solid #334155;
 
 }
 
+.review-card button{
+
+    margin-top:20px;
+
+    background:#2563EB;
+
+    color:white;
+
+    border:none;
+
+    padding:12px 25px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+}
 
 
 

@@ -121,3 +121,14 @@ if(studentName){
     }
 
 }
+const student =
+JSON.parse(localStorage.getItem("currentStudent"));
+
+document.getElementById("bestScore").textContent =
+student.bestScore + " / 15";
+
+document.getElementById("attempts").textContent =
+student.attempts;
+
+document.getElementById("lastScore").textContent =
+student.lastScore + " / 15";

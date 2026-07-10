@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Result</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="result-card">
+
+    <h1>Quiz Completed 🎉</h1>
+
+    <h2 id="scoreText"></h2>
+
+    <button onclick="location.href='review.html'">
+
+        Review Mistakes
+
+    </button>
+
+    <button onclick="location.href='dashboard.html'">
+        Back to Dashboard
+    </button>
+
+</div>
+
+<script>
+
+const score = localStorage.getItem("score");
+
+document.getElementById("scoreText").textContent =
+`Your Score: ${score} / 15`;
+
+</script>
+
+</body>
+</html>
