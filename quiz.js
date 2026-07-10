@@ -14,7 +14,12 @@ let currentQuestion = 0;
 let timeLeft = 30 * 60;
 // 30 minutes
 
+
 let studentAnswers = [];
+
+const optionButtons =
+    document.querySelectorAll(".option-btn");
+    
 function generateQuiz(){
 
     let shuffled = [...questions];
@@ -32,9 +37,6 @@ function loadQuestion(){
 
     const questionNumber =
     document.getElementById("questionNumber");
-
-    const optionButtons =
-    document.querySelectorAll(".option-btn");
 
     const currentQuiz =
     quizQuestions[currentQuestion];
