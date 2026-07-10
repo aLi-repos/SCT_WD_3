@@ -3,37 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Result</title>
+    <title>Quiz Result | ForgeX</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="result-card">
+<div class="result-container">
 
-    <h1>Quiz Completed 🎉</h1>
+    <h1>🎉 Quiz Completed</h1>
 
-    <h2 id="scoreText"></h2>
+    <h2 id="studentName"></h2>
 
-    <button onclick="location.href='review.html'">
+    <div class="result-card">
 
-        Review Mistakes
+        <h3>Your Score</h3>
+        <h1 id="score"></h1>
 
-    </button>
+        <h3>Percentage</h3>
+        <p id="percentage"></p>
 
-    <button onclick="location.href='dashboard.html'">
-        Back to Dashboard
-    </button>
+        <h3>Best Score</h3>
+        <p id="bestScore"></p>
+
+        <h3>Total Attempts</h3>
+        <p id="attempts"></p>
+
+        <h2 id="status"></h2>
+
+    </div>
+
+    <div class="result-buttons">
+
+        <a href="review.html" class="primary-btn">
+            Review Answers
+        </a>
+
+        <a href="dashboard.html" class="secondary-btn">
+            Dashboard
+        </a>
+
+    </div>
 
 </div>
 
-<script>
-
-const score = localStorage.getItem("score");
-
-document.getElementById("scoreText").textContent =
-`Your Score: ${score} / 15`;
-
-</script>
+<script src="result.js"></script>
 
 </body>
 </html>
