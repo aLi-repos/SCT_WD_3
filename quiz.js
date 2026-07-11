@@ -19,7 +19,7 @@ let studentAnswers = [];
 
 const optionButtons =
     document.querySelectorAll(".option-btn");
-    
+
 function generateQuiz(){
 
     let shuffled = [...questions];
@@ -63,9 +63,6 @@ function loadQuestion(){
 
 }
 
-generateQuiz();
-
-loadQuestion();
 optionButtons.forEach(function(button, index){
 
     button.addEventListener("click", function(){
