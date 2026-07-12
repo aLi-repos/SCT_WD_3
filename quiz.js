@@ -1,45 +1,72 @@
-// Total Questions Needed
+// ===============================
+// FORGEX QUIZ ENGINE
+// Part 3A
+// ===============================
 
-const TOTAL_QUESTIONS = 15;
+// Total Questions
+const TOTAL_QUESTIONS = Math.min(15, questions.length);
 
-// Random Questions Array
-
+// Quiz Data
 let quizQuestions = [];
-
-// Current Question
-
+let studentAnswers = [];
 let currentQuestion = 0;
 
-// Student Answers
+// Timer
 let timeLeft = 30 * 60;
-// 30 minutes
 
-
-let studentAnswers = [];
+// Elements
+const questionElement = document.getElementById("question");
+const questionNumber = document.getElementById("questionNumber");
+const timerElement = document.getElementById("timer");
 
 const optionButtons =
-    document.querySelectorAll(".option-btn");
+document.querySelectorAll(".option-btn");
+
+const previousBtn =
+document.getElementById("previousBtn");
+
+const nextBtn =
+document.getElementById("nextBtn");
+
+const submitBtn =
+document.getElementById("submitBtn");
+
+// ===============================
+// RANDOM QUESTIONS
+// ===============================
 
 function generateQuiz(){
 
     let shuffled = [...questions];
 
-    shuffled.sort(() => Math.random() - 0.5);
+    shuffled.sort(function(){
 
-    quizQuestions = shuffled.slice(0, TOTAL_QUESTIONS);
+        return Math.random() - 0.5;
+
+    });
+
+    quizQuestions =
+    shuffled.slice(0, TOTAL_QUESTIONS);
 
 }
 
+// ===============================
+// LOAD QUESTION
+// ===============================
+
 function loadQuestion(){
 
-    const questionElement =
-    document.getElementById("question");
-
-    const questionNumber =
-    document.getElementById("questionNumber");
-
     const currentQuiz =
-    quizQuestions[currentQuestion];
+quizQuestions[currentQuestion];
+
+if(!currentQuiz){
+
+    console.error("Question not found.");
+
+    return;
+
+}
+
 
     questionNumber.textContent =
     `Question ${currentQuestion + 1} / ${TOTAL_QUESTIONS}`;
@@ -47,25 +74,49 @@ function loadQuestion(){
     questionElement.textContent =
     currentQuiz.question;
 
-    optionButtons.forEach(function(button, index){
+    optionButtons.forEach(function(button,index){
 
-    button.textContent = currentQuiz.options[index];
+        button.textContent =
+        currentQuiz.options[index];
 
-    button.classList.remove("selected");
+        button.classList.remove("selected");
 
-    if(studentAnswers[currentQuestion] === index){
+        if(studentAnswers[currentQuestion] === index){
 
-        button.classList.add("selected");
+            button.classList.add("selected");
+
+        }
+
+    });
+
+    previousBtn.disabled =
+    currentQuestion === 0;
+
+    if(currentQuestion === TOTAL_QUESTIONS - 1){
+
+        nextBtn.style.display = "none";
+
+        submitBtn.style.display = "inline-block";
 
     }
 
-});
+    else{
+
+        nextBtn.style.display = "inline-block";
+
+        submitBtn.style.display = "none";
+
+    }
 
 }
 
-optionButtons.forEach(function(button, index){
+// ===============================
+// SELECT OPTION
+// ===============================
 
-    button.addEventListener("click", function(){
+optionButtons.forEach(function(button,index){
+
+    button.addEventListener("click",function(){
 
         studentAnswers[currentQuestion] = index;
 
@@ -74,52 +125,12 @@ optionButtons.forEach(function(button, index){
     });
 
 });
-document.getElementById("submitBtn").addEventListener("click", function(){
 
-    let score = 0;
+// ===============================
+// NEXT BUTTON
+// ===============================
 
-    quizQuestions.forEach(function(question, index){
-
-        if(studentAnswers[index] === question.answer){
-
-            score++;
-
-        }
-
-    });
-
-    localStorage.setItem("score", score);
-
-    localStorage.setItem("quizQuestions", JSON.stringify(quizQuestions));
-
-    localStorage.setItem("studentAnswers", JSON.stringify(studentAnswers));
-
-    let students = JSON.parse(localStorage.getItem("students")) || [];
-
-    let currentStudentEmail = localStorage.getItem("currentStudent");
-
-    let currentStudent = students.find(student => student.email === currentStudentEmail);
-
-    if(currentStudent){
-
-        currentStudent.attempts++;
-
-        if(score > currentStudent.bestScore){
-
-            currentStudent.bestScore = score;
-
-        }
-
-        currentStudent.history.push(score);
-
-        localStorage.setItem("students", JSON.stringify(students));
-
-    }
-
-    window.location.href = "result.html";
-
-});
-document.getElementById("nextBtn").addEventListener("click", function(){
+nextBtn.addEventListener("click",function(){
 
     if(currentQuestion < TOTAL_QUESTIONS - 1){
 
@@ -130,7 +141,12 @@ document.getElementById("nextBtn").addEventListener("click", function(){
     }
 
 });
-document.getElementById("previousBtn").addEventListener("click", function(){
+
+// ===============================
+// PREVIOUS BUTTON
+// ===============================
+
+previousBtn.addEventListener("click",function(){
 
     if(currentQuestion > 0){
 
@@ -141,9 +157,11 @@ document.getElementById("previousBtn").addEventListener("click", function(){
     }
 
 });
-function startTimer(){
+// ===============================
+// TIMER
+// ===============================
 
-    const timer = document.getElementById("timer");
+function startTimer(){
 
     const countdown = setInterval(function(){
 
@@ -151,8 +169,8 @@ function startTimer(){
 
         const seconds = timeLeft % 60;
 
-        timer.textContent =
-        `⏱ ${minutes}:${seconds.toString().padStart(2,'0')}`;
+        timerElement.textContent =
+        `⏱ ${minutes}:${seconds.toString().padStart(2,"0")}`;
 
         timeLeft--;
 
@@ -162,14 +180,273 @@ function startTimer(){
 
             alert("Time is over! Quiz submitted automatically.");
 
-            document.getElementById("submitBtn").click();
+            submitQuiz();
 
         }
 
     },1000);
 
 }
-generateQuiz();
+// ===============================
+// CALCULATE SCORE
+// ===============================
 
-loadQuestion();
-startTimer();
+function calculateScore(){
+
+    let score = 0;
+
+    quizQuestions.forEach(function(question,index){
+
+        if(studentAnswers[index] === question.answer){
+
+            score++;
+
+        }
+
+    });
+
+    return score;
+
+}
+// ===============================
+// SUBMIT QUIZ
+// ===============================
+
+function submitQuiz(){
+
+    const score = calculateScore();
+
+    localStorage.setItem(
+        "score",
+        score
+    );
+
+    localStorage.setItem(
+        "quizQuestions",
+        JSON.stringify(quizQuestions)
+    );
+
+    localStorage.setItem(
+        "studentAnswers",
+        JSON.stringify(studentAnswers)
+    );
+
+    saveStudentProgress(score);
+
+    window.location.href = "result.html";
+
+}
+// ===============================
+// SUBMIT BUTTON
+// ===============================
+
+submitBtn.addEventListener("click",function(){
+
+    submitQuiz();
+
+});
+// ===============================
+// SAVE STUDENT PROGRESS
+// ===============================
+
+function saveStudentProgress(score){
+
+    // Get all students
+    let students =
+    JSON.parse(localStorage.getItem("students")) || [];
+
+    // Get logged in student
+    let currentStudent =
+    JSON.parse(localStorage.getItem("currentStudent"));
+
+    if(!currentStudent){
+
+        alert("Please login again.");
+
+        window.location.href="login.html";
+
+        return;
+
+    }
+
+    // Find current student inside students array
+    const index =
+    students.findIndex(function(student){
+
+        return student.email === currentStudent.email;
+
+    });
+
+    if(index === -1){
+
+        alert("Student not found.");
+
+        return;
+
+    }
+
+    // Update attempts
+    students[index].attempts =
+    (students[index].attempts || 0) + 1;
+
+    // Update best score
+    students[index].bestScore =
+    Math.max(students[index].bestScore || 0, score);
+
+    // Save last score
+    students[index].lastScore = score;
+
+    // Create history if missing
+    if(!students[index].history){
+
+        students[index].history = [];
+
+    }
+
+    // Add quiz history
+    students[index].history.push({
+
+        score: score,
+
+        total: TOTAL_QUESTIONS,
+
+        date: new Date().toLocaleString()
+
+    });
+
+    // Save updated students array
+    localStorage.setItem(
+        "students",
+        JSON.stringify(students)
+    );
+
+    // Update current student
+    currentStudent = students[index];
+
+    localStorage.setItem(
+        "currentStudent",
+        JSON.stringify(currentStudent)
+    );
+
+}
+// ===============================
+// SAVE STUDENT PROGRESS
+// ===============================
+
+function saveStudentProgress(score){
+
+    // Get all students
+    let students =
+    JSON.parse(localStorage.getItem("students")) || [];
+
+    // Get logged in student
+    let currentStudent =
+    JSON.parse(localStorage.getItem("currentStudent"));
+
+    if(!currentStudent){
+
+        alert("Please login again.");
+
+        window.location.href="login.html";
+
+        return;
+
+    }
+
+    // Find current student inside students array
+    const index =
+    students.findIndex(function(student){
+
+        return student.email === currentStudent.email;
+
+    });
+
+    if(index === -1){
+
+        alert("Student not found.");
+
+        return;
+
+    }
+
+    // Update attempts
+    students[index].attempts =
+    (students[index].attempts || 0) + 1;
+
+    // Update best score
+    students[index].bestScore =
+    Math.max(students[index].bestScore || 0, score);
+
+    // Save last score
+    students[index].lastScore = score;
+
+    // Create history if missing
+    if(!students[index].history){
+
+        students[index].history = [];
+
+    }
+
+    // Add quiz history
+    students[index].history.push({
+
+        score: score,
+
+        total: TOTAL_QUESTIONS,
+
+        date: new Date().toLocaleString()
+
+    });
+
+    // Save updated students array
+    localStorage.setItem(
+        "students",
+        JSON.stringify(students)
+    );
+
+    // Update current student
+    currentStudent = students[index];
+
+    localStorage.setItem(
+        "currentStudent",
+        JSON.stringify(currentStudent)
+    );
+
+}
+// ===============================
+// QUIZ INITIALIZATION
+// ===============================
+
+function initializeQuiz(){
+
+    // Check if questions are available
+    if(!questions || questions.length === 0){
+
+        alert("No quiz questions available.");
+
+        return;
+
+    }
+
+    // Generate random quiz
+    generateQuiz();
+
+    // Reset current question
+    currentQuestion = 0;
+
+    // Clear previous answers
+    studentAnswers = [];
+
+    // Load first question
+    loadQuestion();
+
+    // Start timer
+    startTimer();
+
+}
+
+// ===============================
+// START APPLICATION
+// ===============================
+
+initializeQuiz();

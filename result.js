@@ -1,46 +1,69 @@
-const score = Number(localStorage.getItem("score"));
+// ===============================
+// RESULT PAGE
+// ===============================
 
-const currentStudentEmail =
-localStorage.getItem("currentStudent");
+const score =
+Number(localStorage.getItem("score")) || 0;
 
-const students =
-JSON.parse(localStorage.getItem("students")) || [];
+const currentStudent =
+JSON.parse(localStorage.getItem("currentStudent"));
 
-const student =
-students.find(s => s.email === currentStudentEmail);
+if(!currentStudent){
+
+    alert("Please login again.");
+
+    window.location.href = "login.html";
+
+}
+
+// Student Name
 
 document.getElementById("studentName").textContent =
-"Congratulations, " + student.name + " 🎉";
+`Congratulations, ${currentStudent.name}! 🎉`;
+
+// Score
 
 document.getElementById("score").textContent =
-score + " / 15";
+`${score} / 15`;
+
+// Percentage
 
 const percentage =
 Math.round((score / 15) * 100);
 
 document.getElementById("percentage").textContent =
-percentage + "%";
+`${percentage}%`;
+
+// Best Score
 
 document.getElementById("bestScore").textContent =
-student.bestScore + " / 15";
+`${currentStudent.bestScore} / 15`;
+
+// Attempts
 
 document.getElementById("attempts").textContent =
-student.attempts;
+currentStudent.attempts;
+
+// PASS / FAIL
 
 const status =
 document.getElementById("status");
 
 if(score >= 8){
 
-    status.innerHTML = "🟢 PASS";
+    status.textContent =
+    "🟢 PASS";
 
-    status.style.color = "#22c55e";
+    status.style.color =
+    "#22c55e";
 
 }
 else{
 
-    status.innerHTML = "🔴 FAIL";
+    status.textContent =
+    "🔴 FAIL";
 
-    status.style.color = "#ef4444";
+    status.style.color =
+    "#ef4444";
 
 }

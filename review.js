@@ -1,56 +1,113 @@
+// ===============================
+// REVIEW PAGE
+// ===============================
+
 const quizQuestions =
-JSON.parse(localStorage.getItem("quizQuestions"));
+JSON.parse(localStorage.getItem("quizQuestions")) || [];
 
 const studentAnswers =
-JSON.parse(localStorage.getItem("studentAnswers"));
+JSON.parse(localStorage.getItem("studentAnswers")) || [];
 
 const reviewList =
 document.getElementById("reviewList");
 
-quizQuestions.forEach(function(question,index){
+// No questions
 
-    if(studentAnswers[index] !== question.answer){
+if(quizQuestions.length === 0){
 
-        reviewList.innerHTML += `
+    reviewList.innerHTML =
 
-        <div class="review-card">
+    `
+    <div class="empty-review">
 
-            <h3>
-                Question ${index+1}
-            </h3>
+        No quiz data found.
 
-            <p>
-                <strong>Question:</strong>
-                ${question.question}
-            </p>
+    </div>
+    `;
 
-            <p>
-                ❌ Your Answer:
-                ${question.options[studentAnswers[index]] ?? "Not Answered"}
-            </p>
+}
 
-            <p>
-                ✅ Correct Answer:
-                ${question.options[question.answer]}
-            </p>
+// Build Review
 
-            <button
-            onclick="showExplanation('${question.explanation}')">
+else{
 
-                🤖 AI Explain
+    quizQuestions.forEach(function(question,index){
 
-            </button>
+        const studentAnswer =
+        studentAnswers[index];
 
-        </div>
+        const isCorrect =
+        studentAnswer === question.answer;
+
+        const reviewCard =
+        document.createElement("div");
+
+        reviewCard.className =
+        "review-card";
+
+        reviewCard.innerHTML =
+
+        `
+        <h3>
+        Question ${index+1}
+        </h3>
+
+        <p>
+
+        <strong>Question:</strong>
+
+        ${question.question}
+
+        </p>
+
+        <p>
+
+        <strong>Your Answer:</strong>
+
+        ${
+            studentAnswer !== undefined
+            ?
+            question.options[studentAnswer]
+            :
+            "Not Answered"
+        }
+
+        </p>
+
+        <p>
+
+        <strong>Correct Answer:</strong>
+
+        ${question.options[question.answer]}
+
+        </p>
+
+        <p>
+
+        <strong>Status:</strong>
+
+        ${
+            isCorrect
+            ?
+            "✅ Correct"
+            :
+            "❌ Incorrect"
+        }
+
+        </p>
+
+        <p>
+
+        <strong>Explanation:</strong>
+
+        ${question.explanation}
+
+        </p>
 
         `;
 
-    }
+        reviewList.appendChild(reviewCard);
 
-});
-
-function showExplanation(text){
-
-    alert(text);
+    });
 
 }
