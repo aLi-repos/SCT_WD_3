@@ -1,134 +1,80 @@
-// ======================
-// SIGNUP
-// ======================
+// ==========================================================
+// RESPONSIVE MOBILE NAVIGATION
+// ==========================================================
 
-const signupForm = document.getElementById("signupForm");
+const menuToggle = document.querySelector(".menu-toggle");
 
-if (signupForm) {
+const navMenu = document.querySelector(".nav-links");
 
-    signupForm.addEventListener("submit", function (event) {
+if(menuToggle && navMenu){
 
-        event.preventDefault();
+    menuToggle.addEventListener("click",function(){
 
-        const fullName = document.getElementById("fullName").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value;
-        const confirmPassword = document.getElementById("confirmPassword").value;
+        navMenu.classList.toggle("active");
 
-        if (password !== confirmPassword) {
-            alert("Passwords do not match!");
-            return;
-        }
+        if(navMenu.classList.contains("active")){
 
-        let students = JSON.parse(localStorage.getItem("students")) || [];
-
-        const existingStudent = students.find(function(student){
-            return student.email === email;
-        });
-
-        if(existingStudent){
-            alert("Email already registered!");
-            return;
-        }
-
-        const student = {
-
-            name: fullName,
-            email: email,
-            password: password,
-
-            bestScore: 0,
-            attempts: 0,
-            loginCount: 0,
-            history: []
-
-        };
-
-        students.push(student);
-
-        localStorage.setItem("students", JSON.stringify(students));
-
-        alert("Account Created Successfully!");
-
-        window.location.href = "login.html";
-
-    });
-
-}
-// ======================
-// LOGIN
-// ======================
-
-const loginForm = document.getElementById("loginForm");
-
-if(loginForm){
-
-    loginForm.addEventListener("submit",function(event){
-
-        event.preventDefault();
-
-        const email = document.getElementById("loginEmail").value.trim();
-
-        const password = document.getElementById("loginPassword").value;
-
-        let students = JSON.parse(localStorage.getItem("students")) || [];
-
-        const student = students.find(function(user){
-
-            return user.email === email &&
-                   user.password === password;
-
-        });
-
-        if(student){
-
-            student.loginCount++;
-
-            localStorage.setItem("currentStudent",JSON.stringify(student));
-
-            localStorage.setItem("students",JSON.stringify(students));
-
-            alert("Login Successful!");
-
-            window.location.href="dashboard.html";
+            menuToggle.innerHTML = "✕";
 
         }
 
         else{
 
-            alert("Invalid Email or Password");
+            menuToggle.innerHTML = "☰";
 
         }
 
     });
 
 }
-// ======================
-// DASHBOARD
-// ======================
 
-const studentName = document.getElementById("studentName");
+// ==========================================================
+// CLOSE MENU AFTER CLICKING A LINK
+// ==========================================================
 
-if(studentName){
+const mobileLinks =
+document.querySelectorAll(".nav-links a");
 
-    const currentStudent =
-    JSON.parse(localStorage.getItem("currentStudent"));
+mobileLinks.forEach(function(link){
 
-    if(currentStudent){
+    link.addEventListener("click",function(){
 
-        studentName.textContent = currentStudent.name;
+        if(navMenu){
+
+            navMenu.classList.remove("active");
+
+        }
+
+        if(menuToggle){
+
+            menuToggle.innerHTML = "☰";
+
+        }
+
+    });
+
+});
+
+// ==========================================================
+// CLOSE MENU WHEN WINDOW IS RESIZED
+// ==========================================================
+
+window.addEventListener("resize",function(){
+
+    if(window.innerWidth > 768){
+
+        if(navMenu){
+
+            navMenu.classList.remove("active");
+
+        }
+
+        if(menuToggle){
+
+            menuToggle.innerHTML = "☰";
+
+        }
 
     }
 
-}
-const student =
-JSON.parse(localStorage.getItem("currentStudent"));
-
-document.getElementById("bestScore").textContent =
-student.bestScore + " / 15";
-
-document.getElementById("attempts").textContent =
-student.attempts;
-
-document.getElementById("lastScore").textContent =
-student.lastScore + " / 15";
+});
