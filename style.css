@@ -927,7 +927,13 @@ section{
 
     margin:auto;
 
-    border-radius:200px;
+    border-top-left-radius:200px;
+
+    border-top-right-radius:200px;
+
+    border-bottom-left-radius:200px;
+
+    border-bottom-right-radius:200px;
 
     box-shadow:
 
@@ -2697,7 +2703,7 @@ footer hr{
    TABLETS
 ========================================================== */
 
-@media (max-width:768px){
+@media (max-width:1024px){
 
 .navbar{
 
