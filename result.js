@@ -28,26 +28,29 @@ document.getElementById("score").textContent =
 
 // Percentage
 
-const percentage =
-Math.round((score / 15) * 100);
+    const percentage =
+    Math.round((score / 15) * 100);
 
-document.getElementById("percentage").textContent =
-`${percentage}%`;
+    document.getElementById("percentage").textContent =
+    `${percentage}%`;
 
-// Best Score
+    const students =
+    JSON.parse(localStorage.getItem("students")) || [];
 
-document.getElementById("bestScore").textContent =
-`${currentStudent.bestScore} / 15`;
+    const updatedStudent =
+    students.find(function(student){
 
-// Attempts
+        return student.email === currentStudent.email;
 
-document.getElementById("attempts").textContent =
-currentStudent.attempts;
+    }) || currentStudent;
+
+    document.getElementById("bestScore").textContent =
+    `${updatedStudent.bestScore || 0} / 15`;
+
+    document.getElementById("attempts").textContent =
+    updatedStudent.attempts || 0;
 
 // PASS / FAIL
-
-const status =
-document.getElementById("status");
 
 // ======================================
 // PERFORMANCE STATUS
