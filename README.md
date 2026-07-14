@@ -6,6 +6,34 @@ This project was developed as part of my **Web Development Internship** at **Ski
 
 ---
 
+## 🔄 ForgeX Workflow
+
+```
+Landing Page
+      │
+      ▼
+Sign Up
+      │
+      ▼
+Login
+      │
+      ▼
+Dashboard
+      │
+      ▼
+Web Development Quiz
+      │
+      ▼
+Submit Quiz
+      │
+      ▼
+Result
+      │
+      ▼
+Review Answers
+```
+
+
 ## 📌 Features
 
 ### 🌐 Responsive Landing Page
