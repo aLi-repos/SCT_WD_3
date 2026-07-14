@@ -192,8 +192,7 @@ GitHub:
 https://github.com/ali-repos
 
 LinkedIn:
-(Add your LinkedIn profile here)
-
+www.linkedin.com/in/shaik-rahamath-ali-997374380
 ---
 
 ## ⭐ If you like this project
